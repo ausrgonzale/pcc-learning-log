@@ -1,0 +1,14 @@
+asgiref==3.11.1
+dj-database-url==3.1.2
+dj-static==0.0.6
+Django==6.0.3
+django-bootstrap3==26.1
+django-stubs==6.0.0
+django-stubs-ext==6.0.0
+gunicorn==25.1.0
+packaging==26.0
+sqlparse==0.5.5
+static3==0.7.0
+psycopg2>=2.6.1
+types-PyYAML==6.0.12.20250915
+typing_extensions==4.15.0
