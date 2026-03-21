@@ -25,9 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-w3abp1#yipns0j^vk9g9=*kj@isz5hi)j(y!&b#^(@jg4@%)zb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['pcc-learning-log.herokuapp.com']
 
 LOGIN_REDIRECT_URL = 'index'
 
@@ -153,10 +153,7 @@ if cwd == '/app' or cwd[:4] == '/tmp':
     # Honor the 'X-Forwarded-Proto' header for request.is_secure()
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-    # Allow all host headers.
-    ALLOWED_HOSTS = ['*']
-
     # Static asset configuration
     STATIC_URL = '/static/'
     STATIC_ROOT = BASE_DIR / 'staticfiles'
-    STATICFILES_DIRS= [BASE_DIR / "static",]
+    STATICFILES_DIRS= [BASE_DIR / "learning_log" / "static",]
