@@ -27,7 +27,10 @@ SECRET_KEY = 'django-insecure-w3abp1#yipns0j^vk9g9=*kj@isz5hi)j(y!&b#^(@jg4@%)zb
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['pcc-learning-log.herokuapp.com']
+ALLOWED_HOSTS = ['pcc-learning-log.herokuapp.com',
+                 'localhost',
+                 '127.0.0.1',
+                 ]
 
 LOGIN_REDIRECT_URL = 'index'
 
