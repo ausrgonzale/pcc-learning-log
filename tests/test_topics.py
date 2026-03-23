@@ -1,5 +1,6 @@
 import pytest
-
+from django.contrib.auth.models import User
+from learning_logs.models import Topic
 
 @pytest.mark.django_db
 def test_topics_page_requires_login(client):
@@ -17,3 +18,35 @@ def test_logged_in_user_can_view_topics(authenticated_client):
     response = authenticated_client.get("/topics/")
 
     assert response.status_code == 200
+
+@pytest.mark.django_db
+def test_user_only_sees_own_topics(authenticated_client, user):
+    """
+    A logged-in user should only see their own topics.
+    """
+
+    # Create another user
+    other_user = User.objects.create_user(
+        username="otheruser",
+        password="password123"
+    )
+
+    # Create topics for both users
+    Topic.objects.create(
+        text="My Topic",
+        owner=user
+    )
+
+    Topic.objects.create(
+        text="Other User Topic",
+        owner=other_user
+    )
+
+    # Request topics page
+    response = authenticated_client.get("/topics/")
+
+    content = response.content.decode()
+
+    assert "My Topic" in content
+    assert "Other User Topic" not in content
+
