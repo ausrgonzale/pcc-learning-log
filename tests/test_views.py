@@ -1,5 +1,5 @@
 import pytest
-from tests.factories import EntryFactory
+from tests.factories import EntryFactory, UserFactory, TopicFactory
 from django.urls import reverse
 from django.contrib.auth.models import User
 
@@ -30,20 +30,14 @@ def test_topics_requires_login(client):
 @pytest.mark.django_db
 def test_logged_in_user_can_view_topics(client):
 
-    user = User.objects.create_user(
-        username="testuser",
-        password="testpass123"
+    user = UserFactory()
+
+    TopicFactory(
+        owner=user,
+        text="Python"
     )
 
-    Topic.objects.create(
-        text="Python",
-        owner=user
-    )
-
-    client.login(
-        username="testuser",
-        password="testpass123"
-    )
+    client.force_login(user)
 
     url = reverse('learning_logs:topics')
 
@@ -56,20 +50,11 @@ def test_logged_in_user_can_view_topics(client):
 @pytest.mark.django_db
 def test_user_can_view_own_topic(client):
 
-    user = User.objects.create_user(
-        username="testuser",
-        password="testpass123"
-    )
+    user = UserFactory()
 
-    topic = Topic.objects.create(
-        text="Django",
-        owner=user
-    )
+    topic = TopicFactory(owner=user)
 
-    client.login(
-        username="testuser",
-        password="testpass123"
-    )
+    client.force_login(user)
 
     url = reverse(
         'learning_logs:topic',
@@ -85,25 +70,13 @@ def test_user_can_view_own_topic(client):
 @pytest.mark.django_db
 def test_user_cannot_access_other_users_topic(client):
 
-    user1 = User.objects.create_user(
-        username="user1",
-        password="pass123"
-    )
+    user1 = UserFactory()
 
-    user2 = User.objects.create_user(
-        username="user2",
-        password="pass123"
-    )
+    user2 = UserFactory()
 
-    topic = Topic.objects.create(
-        text="Private Topic",
-        owner=user1
-    )
+    topic = TopicFactory(owner=user1)
 
-    client.login(
-        username="user2",
-        password="pass123"
-    )
+    client.force_login(user2)
 
     url = reverse(
         'learning_logs:topic',
@@ -118,15 +91,9 @@ def test_user_cannot_access_other_users_topic(client):
 @pytest.mark.django_db
 def test_user_can_create_topic(client):
 
-    user = User.objects.create_user(
-        username="testuser",
-        password="testpass123"
-    )
+    user = UserFactory()
 
-    client.login(
-        username="testuser",
-        password="testpass123"
-    )
+    client.force_login(user)
 
     url = reverse('learning_logs:new_topic')
 
@@ -143,20 +110,11 @@ def test_user_can_create_topic(client):
 @pytest.mark.django_db
 def test_user_can_create_entry(client):
 
-    user = User.objects.create_user(
-        username="testuser",
-        password="testpass123"
-    )
+    user = UserFactory()
 
-    topic = Topic.objects.create(
-        text="Testing",
-        owner=user
-    )
+    topic = TopicFactory(owner=user)
 
-    client.login(
-        username="testuser",
-        password="testpass123"
-    )
+    client.force_login(user)
 
     url = reverse(
         'learning_logs:new_entry',
@@ -179,10 +137,7 @@ def test_user_can_edit_entry(client):
 
     user = entry.topic.owner
 
-    client.login(
-        username=user.username,
-        password="testpass123"
-    )
+    client.force_login(user)
 
     url = reverse(
         "learning_logs:edit_entry",
@@ -203,15 +158,9 @@ def test_user_can_edit_entry(client):
 @pytest.mark.django_db
 def test_new_topic_get_returns_form(client):
 
-    user = User.objects.create_user(
-        username="testuser",
-        password="testpass123"
-    )
+    user = UserFactory()
 
-    client.login(
-        username="testuser",
-        password="testpass123"
-    )
+    client.force_login(user)
 
     url = reverse('learning_logs:new_topic')
 
@@ -224,15 +173,9 @@ def test_new_topic_get_returns_form(client):
 @pytest.mark.django_db
 def test_invalid_topic_submission(client):
 
-    user = User.objects.create_user(
-        username="testuser",
-        password="testpass123"
-    )
+    user = UserFactory()
 
-    client.login(
-        username="testuser",
-        password="testpass123"
-    )
+    client.force_login(user)
 
     url = reverse('learning_logs:new_topic')
 
@@ -248,20 +191,11 @@ def test_invalid_topic_submission(client):
 @pytest.mark.django_db
 def test_new_entry_get_returns_form(client):
 
-    user = User.objects.create_user(
-        username="testuser",
-        password="testpass123"
-    )
+    user = UserFactory()
 
-    topic = Topic.objects.create(
-        text="Testing",
-        owner=user
-    )
+    topic = TopicFactory(owner=user)
 
-    client.login(
-        username="testuser",
-        password="testpass123"
-    )
+    client.force_login(user)
 
     url = reverse(
         'learning_logs:new_entry',
@@ -277,25 +211,13 @@ def test_new_entry_get_returns_form(client):
 @pytest.mark.django_db
 def test_edit_entry_get_returns_form(client):
 
-    user = User.objects.create_user(
-        username="testuser",
-        password="testpass123"
-    )
+    user = UserFactory()
 
-    topic = Topic.objects.create(
-        text="Testing",
-        owner=user
-    )
+    topic = TopicFactory(owner=user)
 
-    entry = Entry.objects.create(
-        topic=topic,
-        text="Original"
-    )
-
-    client.login(
-        username="testuser",
-        password="testpass123"
-    )
+    entry = EntryFactory(topic=topic,text="Original")
+    
+    client.force_login(user)
 
     url = reverse(
         'learning_logs:edit_entry',
@@ -311,30 +233,15 @@ def test_edit_entry_get_returns_form(client):
 @pytest.mark.django_db
 def test_user_cannot_edit_other_users_entry(client):
 
-    owner = User.objects.create_user(
-        username="owner",
-        password="pass123"
-    )
+    owner = UserFactory()
 
-    attacker = User.objects.create_user(
-        username="attacker",
-        password="pass123"
-    )
+    attacker = UserFactory()
 
-    topic = Topic.objects.create(
-        text="Private Topic",
-        owner=owner
-    )
+    topic = TopicFactory(owner=owner)
 
-    entry = Entry.objects.create(
-        topic=topic,
-        text="Secret entry"
-    )
+    entry = EntryFactory(topic=topic)
 
-    client.login(
-        username="attacker",
-        password="pass123"
-    )
+    client.force_login(attacker)
 
     url = reverse(
         'learning_logs:edit_entry',
@@ -349,25 +256,13 @@ def test_user_cannot_edit_other_users_entry(client):
 @pytest.mark.django_db
 def test_user_can_delete_entry(client):
 
-    user = User.objects.create_user(
-        username="testuser",
-        password="testpass123"
-    )
+    user = UserFactory()
 
-    topic = Topic.objects.create(
-        text="Cleanup",
-        owner=user
-    )
+    topic = TopicFactory(owner=user)
 
-    entry = Entry.objects.create(
-        topic=topic,
-        text="Temporary entry"
-    )
+    entry = EntryFactory(topic=topic)
 
-    client.login(
-        username="testuser",
-        password="testpass123"
-    )
+    client.force_login(user)
 
     url = reverse(
         "learning_logs:delete_entry",
@@ -384,30 +279,15 @@ def test_user_can_delete_entry(client):
 @pytest.mark.django_db
 def test_user_cannot_delete_other_users_entry(client):
 
-    owner = User.objects.create_user(
-        username="owner",
-        password="pass123"
-    )
+    owner = UserFactory()
 
-    attacker = User.objects.create_user(
-        username="attacker",
-        password="pass123"
-    )
+    attacker = UserFactory()
 
-    topic = Topic.objects.create(
-        text="Private",
-        owner=owner
-    )
+    topic = TopicFactory(owner=owner)
 
-    entry = Entry.objects.create(
-        topic=topic,
-        text="Secret"
-    )
+    entry = EntryFactory(topic=topic)
 
-    client.login(
-        username="attacker",
-        password="pass123"
-    )
+    client.force_login(attacker)
 
     url = reverse(
         "learning_logs:delete_entry",

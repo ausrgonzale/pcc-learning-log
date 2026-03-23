@@ -1,18 +1,14 @@
 import pytest
-from django.contrib.auth.models import User
+from tests.factories import UserFactory, TopicFactory
 from learning_logs.models import Topic, Entry
-
 
 @pytest.mark.django_db
 def test_entry_str_representation():
     """Entry string should start with entry text."""
 
-    user = User.objects.create_user(
-        username="testuser",
-        password="password123"
-    )
+    user = UserFactory()
 
-    topic = Topic.objects.create(
+    topic = TopicFactory(
         text="Python",
         owner=user
     )

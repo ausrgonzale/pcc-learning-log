@@ -1,6 +1,5 @@
 import pytest
-from django.contrib.auth.models import User
-from learning_logs.models import Topic
+from tests.factories import UserFactory, TopicFactory
 
 @pytest.mark.django_db
 def test_topics_page_requires_login(client):
@@ -26,21 +25,15 @@ def test_user_only_sees_own_topics(authenticated_client, user):
     """
 
     # Create another user
-    other_user = User.objects.create_user(
-        username="otheruser",
-        password="password123"
-    )
+    other_user = UserFactory()
 
     # Create topics for both users
-    Topic.objects.create(
-        text="My Topic",
-        owner=user
-    )
+    TopicFactory(text="My Topic",
+                 owner=user)
 
-    Topic.objects.create(
+    TopicFactory(
         text="Other User Topic",
-        owner=other_user
-    )
+        owner=other_user)
 
     # Request topics page
     response = authenticated_client.get("/topics/")
@@ -49,4 +42,3 @@ def test_user_only_sees_own_topics(authenticated_client, user):
 
     assert "My Topic" in content
     assert "Other User Topic" not in content
-
