@@ -1,4 +1,5 @@
 import pytest
+from tests.factories import UserFactory
 from django.urls import reverse
 from django.contrib.auth.models import User
 
@@ -51,6 +52,13 @@ def test_invalid_registration(client):
 """ Test Logout Redirect Works """
 @pytest.mark.django_db
 def test_logout_redirects(client):
+
+    user = UserFactory()
+
+    client.login(
+        username=user.username,
+        password="testpass123"
+    )
 
     response = client.post(
         reverse("users:logout")

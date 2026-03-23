@@ -27,3 +27,5 @@ staticfiles/
 
 # Testing
 .pytest_cache/
+coverage.xml
+htmlcov/

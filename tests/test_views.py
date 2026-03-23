@@ -1,4 +1,5 @@
 import pytest
+from tests.factories import EntryFactory
 from django.urls import reverse
 from django.contrib.auth.models import User
 
@@ -174,31 +175,20 @@ def test_user_can_create_entry(client):
 @pytest.mark.django_db
 def test_user_can_edit_entry(client):
 
-    user = User.objects.create_user(
-        username="testuser",
-        password="testpass123"
-    )
+    entry = EntryFactory()
 
-    topic = Topic.objects.create(
-        text="Testing",
-        owner=user
-    )
-
-    entry = Entry.objects.create(
-        topic=topic,
-        text="Old text"
-    )
+    user = entry.topic.owner
 
     client.login(
-        username="testuser",
+        username=user.username,
         password="testpass123"
     )
 
     url = reverse(
-        'learning_logs:edit_entry',
+        "learning_logs:edit_entry",
         args=[entry.pk]
     )
-    
+
     response = client.post(
         url,
         {"text": "Updated text"}
