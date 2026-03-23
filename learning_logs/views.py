@@ -89,4 +89,28 @@ def edit_entry(request, entry_id):
     context = {'entry': entry, 'topic' : topic, 'form' : form}
     return render(request, 'learning_logs/edit_entry.html', context)
 
+@login_required
+def delete_entry(request, entry_id):
+    """Delete an entry (used for automation cleanup or future UI)."""
+
+    entry = get_object_or_404(Entry, id=entry_id)
+
+    # Security check
+    if entry.topic.owner != request.user:
+        raise Http404
+
+    if request.method == "POST":
+        topic_id = entry.topic.pk
+        entry.delete()
+
+        return HttpResponseRedirect(
+            reverse(
+                'learning_logs:topic',
+                args=[topic_id]
+            )
+        )
+
+    # Only allow POST
+    raise Http404
+
 
