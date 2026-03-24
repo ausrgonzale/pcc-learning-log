@@ -306,3 +306,72 @@ def test_topic_pagination_no_next_link_when_entries_less_than_page_size(
     assert response.status_code == 200
     assert len(entries) == 9
     assert entries.has_next() is False
+
+@pytest.mark.django_db
+def test_confirm_delete_entry_page_loads(
+    authenticated_client,
+    user,
+):
+    """Confirmation page should load successfully."""
+
+    topic = TopicFactory(owner=user)
+    entry = EntryFactory(topic=topic)
+
+    url = reverse(
+        "learning_logs:confirm_delete_entry",
+        args=[entry.id],
+    )
+
+    response = authenticated_client.get(url)
+
+    assert response.status_code == 200
+    assert b"Delete Entry" in response.content
+
+@pytest.mark.django_db
+def test_confirm_delete_entry_cancel_link_points_to_topic(
+    authenticated_client,
+    user,
+):
+    """Cancel link should return to topic page."""
+
+    topic = TopicFactory(owner=user)
+    entry = EntryFactory(topic=topic)
+
+    url = reverse(
+        "learning_logs:confirm_delete_entry",
+        args=[entry.id],
+    )
+
+    response = authenticated_client.get(url)
+
+    topic_url = reverse(
+        "learning_logs:topic",
+        args=[topic.id],
+    )
+
+    assert topic_url.encode() in response.content
+
+@pytest.mark.django_db
+def test_delete_entry_via_confirmation_removes_entry(
+    authenticated_client,
+    user,
+):
+    """Posting delete should remove the entry."""
+
+    topic = TopicFactory(owner=user)
+    entry = EntryFactory(topic=topic)
+
+    delete_url = reverse(
+        "learning_logs:delete_entry",
+        args=[entry.id],
+    )
+
+    response = authenticated_client.post(delete_url)
+
+    assert response.status_code == 302
+
+    assert not entry.__class__.objects.filter(
+        id=entry.id
+    ).exists()
+
+
