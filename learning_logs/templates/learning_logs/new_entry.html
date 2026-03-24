@@ -9,6 +9,12 @@
     {% csrf_token %}
     {{ form.as_p }}
     <button name='submit'>add entry</button>
+
+    &nbsp;|&nbsp;
+
+    <a href="{% url 'learning_logs:topic' topic.id %}">
+      Cancel
+    </a>
   </form>
 
 {% endblock content %}

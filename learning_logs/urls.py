@@ -19,4 +19,5 @@ urlpatterns = [
     # Page for editing an entry
     path('edit_entry/<int:entry_id>/', views.edit_entry, name='edit_entry'),
     path('delete_entry/<int:entry_id>/', views.delete_entry, name='delete_entry'),
+    path('confirm_delete_entry/<int:entry_id>/', views.confirm_delete_entry, name='confirm_delete_entry'),
 ]
