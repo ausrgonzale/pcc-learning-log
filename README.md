@@ -276,6 +276,38 @@ Potential next steps for the project:
 
 ---
 
+## Release History
+
+Releases listed in chronological order (oldest to newest).
+
+### v1.0.0 — Initial Stable Release
+
+Initial production-ready version of the Learning Log application.
+
+Features:
+
+- Django Learning Log application
+- pytest test suite
+- factory_boy factories
+- Parameterized authorization tests
+- GitHub Actions CI pipeline
+- 99% test coverage
+
+### v1.1.0 — Pagination Feature
+
+Added pagination support to the topic detail view.
+
+Enhancements:
+
+- Paginated entries list (10 per page)
+- Previous / Next navigation controls
+- Safe handling of invalid page requests
+- Pagination boundary tests
+- Maintained 99% test coverage
+- CI pipeline stability preserved
+
+---
+
 ## Author
 
 Ron Gonzalez
