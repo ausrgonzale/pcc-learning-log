@@ -2,6 +2,7 @@ from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
 from .models import Topic, Entry
 from .forms import TopicForm, EntryForm
@@ -27,8 +28,17 @@ def topic(request, topic_id):
     # Make sure the topic belongs to the current user.
     if topic.owner != request.user:
         raise Http404
+    
     entries = topic.entries.order_by('-date_added') # type: ignore
-    context = {'topic': topic, "entries": entries}
+
+    paginator = Paginator(entries, 10)
+
+    page_number = request.GET.get("page")
+
+    page_obj = paginator.get_page(page_number)
+
+    context = {'topic': topic, "entries": page_obj}
+
     return render(request, 'learning_logs/topic.html', context)
 
 @login_required

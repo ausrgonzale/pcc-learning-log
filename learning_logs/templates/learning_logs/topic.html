@@ -27,6 +27,28 @@
 
   {% empty %}
         There are no entries for this topic yet.
-  {% endfor %}      
+  {% endfor %}
+
+  {% if entries %} 
+    <div class="pagination">
+
+      {% if entries.has_previous %}
+        <a href="?page={{ entries.previous_page_number }}">
+          Previous
+        </a>
+      {% endif %}
+
+      <span>
+        Page {{ entries.number }} of {{ entries.paginator.num_pages }}
+      </span>
+
+      {% if entries.has_next %}
+        <a href="?page={{ entries.next_page_number }}">
+          Next
+        </a>
+      {% endif %}
+
+  </div>
+{% endif %}
 
 {% endblock content%}

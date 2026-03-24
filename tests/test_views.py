@@ -1,6 +1,8 @@
 import pytest
 from tests.factories import EntryFactory, UserFactory, TopicFactory
 from django.urls import reverse
+from learning_logs.models import Topic
+from tests.factories import TopicFactory, EntryFactory
 from django.contrib.auth.models import User
 
 from learning_logs.models import Topic, Entry
@@ -283,3 +285,24 @@ def test_user_cannot_delete_other_users_entry(client):
     assert response.status_code == 404
     assert Entry.objects.count() == 1
 
+
+@pytest.mark.django_db
+def test_topic_pagination_no_next_link_when_entries_less_than_page_size(
+    authenticated_client,
+    user,
+):
+    """Next link should not appear when entries fit on one page."""
+
+    topic = TopicFactory(owner=user)
+
+    EntryFactory.create_batch(9, topic=topic)
+
+    url = reverse("learning_logs:topic", args=[topic.id])
+
+    response = authenticated_client.get(url)
+
+    entries = response.context["entries"]
+
+    assert response.status_code == 200
+    assert len(entries) == 9
+    assert entries.has_next() is False
