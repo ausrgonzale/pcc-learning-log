@@ -297,7 +297,7 @@ def test_topic_pagination_no_next_link_when_entries_less_than_page_size(
 
     EntryFactory.create_batch(9, topic=topic)
 
-    url = reverse("learning_logs:topic", args=[topic.id])
+    url = reverse("learning_logs:topic", args=[topic.pk])
 
     response = authenticated_client.get(url)
 
@@ -319,7 +319,7 @@ def test_confirm_delete_entry_page_loads(
 
     url = reverse(
         "learning_logs:confirm_delete_entry",
-        args=[entry.id],
+        args=[entry.pk],
     )
 
     response = authenticated_client.get(url)
@@ -339,14 +339,14 @@ def test_confirm_delete_entry_cancel_link_points_to_topic(
 
     url = reverse(
         "learning_logs:confirm_delete_entry",
-        args=[entry.id],
+        args=[entry.pk],
     )
 
     response = authenticated_client.get(url)
 
     topic_url = reverse(
         "learning_logs:topic",
-        args=[topic.id],
+        args=[topic.pk],
     )
 
     assert topic_url.encode() in response.content
@@ -363,7 +363,7 @@ def test_delete_entry_via_confirmation_removes_entry(
 
     delete_url = reverse(
         "learning_logs:delete_entry",
-        args=[entry.id],
+        args=[entry.pk],
     )
 
     response = authenticated_client.post(delete_url)
@@ -371,7 +371,7 @@ def test_delete_entry_via_confirmation_removes_entry(
     assert response.status_code == 302
 
     assert not entry.__class__.objects.filter(
-        id=entry.id
+        id=entry.pk
     ).exists()
 
 
