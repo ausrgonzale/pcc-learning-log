@@ -280,33 +280,51 @@ Potential next steps for the project:
 
 Releases listed in chronological order (oldest to newest).
 
-### v1.0.0 — Initial Stable Release
+### v1.1.0 — Pagination Feature
 
-Initial production-ready version of the Learning Log application.
+Added pagination support to improve usability when viewing large numbers of entries.
 
 Features:
 
-- Django Learning Log application
-- pytest test suite
-- factory_boy factories
-- Parameterized authorization tests
-- GitHub Actions CI pipeline
-- 99% test coverage
+- Entry pagination on topic detail page
+- Configurable page size
+- Navigation controls (Next / Previous)
+- pytest validation for pagination behavior
+- CI pipeline validation
 
-### v1.1.0 — Pagination Feature
+### v1.2.0 — Delete Workflow
 
-Added pagination support to the topic detail view.
+Implemented a safe delete workflow with confirmation and navigation controls.
 
-Enhancements:
+Features:
 
-- Paginated entries list (10 per page)
-- Previous / Next navigation controls
-- Safe handling of invalid page requests
-- Pagination boundary tests
-- Maintained 99% test coverage
-- CI pipeline stability preserved
+- Delete entry confirmation page
+- POST-only delete enforcement
+- Cancel navigation support
+- Authorization protection for delete operations
+- pytest validation for delete workflow
+- CI pipeline validation
+- ~99% test coverage maintained
+
+### v1.3.0 — REST API Integration
+
+Introduced a secure REST API using Django REST Framework to support programmatic access and future automation workflows.
+
+Features:
+
+* Django REST Framework (DRF) integration
+* REST API endpoints for Topics and Entries
+* Full CRUD operations via API
+* Authentication required for all API endpoints
+* User ownership filtering and data isolation
+* Server-side ownership assignment on create
+* Permission validation for update and delete operations
+* pytest API test suite
+* CI pipeline validation for API functionality
+* ~99% test coverage maintained
 
 ---
+
 
 ## Author
 

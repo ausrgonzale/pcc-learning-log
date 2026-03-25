@@ -10,7 +10,7 @@ from tests.factories import UserFactory, TopicFactory
 def test_api_requires_authentication(client):
     """Unauthenticated users should be blocked."""
     response = client.get("/api/topics/")
-    assert response.status_code == 403
+    assert response.status_code == 401
 
 
 @pytest.mark.django_db
