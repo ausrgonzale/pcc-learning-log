@@ -143,3 +143,51 @@ def test_entry_filter_requires_authentication(client, user):
     )
 
     assert response.status_code == 401
+
+@pytest.mark.django_db
+def test_user_can_order_topics_by_date(authenticated_client, user):
+    """
+    User can order topics by date_added.
+    """
+
+    topic1 = TopicFactory(owner=user)
+    topic2 = TopicFactory(owner=user)
+
+    url = reverse("api:topics")
+
+    response = authenticated_client.get(
+        url,
+        {"ordering": "date_added"},
+    )
+
+    assert response.status_code == 200
+
+    results = response.json()
+
+    assert len(results) == 2
+
+    # Oldest first when ordering ascending
+    assert results[0]["id"] == topic1.pk
+    assert results[1]["id"] == topic2.pk
+
+@pytest.mark.django_db
+def test_user_can_order_topics_descending_by_date(
+    authenticated_client,
+    user,
+):
+    topic1 = TopicFactory(owner=user)
+    topic2 = TopicFactory(owner=user)
+
+    url = reverse("api:topics")
+
+    response = authenticated_client.get(
+        url,
+        {"ordering": "-date_added"},
+    )
+
+    assert response.status_code == 200
+
+    results = response.json()
+
+    assert results[0]["id"] == topic2.pk
+    assert results[1]["id"] == topic1.pk
