@@ -280,51 +280,195 @@ Potential next steps for the project:
 
 Releases listed in chronological order (oldest to newest).
 
-### v1.1.0 — Pagination Feature
+## v1.0.0 — Core Application Foundation
 
-Added pagination support to improve usability when viewing large numbers of entries.
-
-Features:
-
-- Entry pagination on topic detail page
-- Configurable page size
-- Navigation controls (Next / Previous)
-- pytest validation for pagination behavior
-- CI pipeline validation
-
-### v1.2.0 — Delete Workflow
-
-Implemented a safe delete workflow with confirmation and navigation controls.
+Established the initial Django Learning Log application with authenticated user workflows, automated testing, and continuous integration to support reliable development and deployment practices.
 
 Features:
 
-- Delete entry confirmation page
-- POST-only delete enforcement
-- Cancel navigation support
-- Authorization protection for delete operations
-- pytest validation for delete workflow
-- CI pipeline validation
-- ~99% test coverage maintained
+Core Django application structure with Topics and Entries models
 
-### v1.3.0 — REST API Integration
+User authentication and registration workflows
 
-Introduced a secure REST API using Django REST Framework to support programmatic access and future automation workflows.
+User-specific data ownership and access control
+
+Template-based UI for creating and viewing learning logs
+
+Initial pytest test suite for application behavior
+
+GitHub Actions CI pipeline for automated test execution
+
+Structured repository layout supporting maintainable development
+
+Version-controlled release workflow using Git tags
+
+Baseline production-ready CRUD functionality
+
+~99% test coverage established
+
+## v1.1.0 — Pagination Feature
+
+Added pagination support to improve usability when viewing large numbers of entries and to ensure consistent performance as datasets grow.
 
 Features:
 
-* Django REST Framework (DRF) integration
-* REST API endpoints for Topics and Entries
-* Full CRUD operations via API
-* Authentication required for all API endpoints
-* User ownership filtering and data isolation
-* Server-side ownership assignment on create
-* Permission validation for update and delete operations
-* pytest API test suite
-* CI pipeline validation for API functionality
-* ~99% test coverage maintained
+Entry pagination on topic detail page
 
----
+Configurable page size for result sets
 
+Navigation controls (Next / Previous)
+
+Consistent handling of paginated query results
+
+pytest validation for pagination behavior
+
+CI pipeline validation for pagination workflows
+
+Maintained stable user experience for large datasets
+
+~99% test coverage maintained
+
+## v1.2.0 — Delete Workflow
+
+Implemented a safe and controlled delete workflow to protect user data and prevent accidental record removal.
+
+Features:
+
+Delete entry confirmation page
+
+POST-only delete enforcement for safe operations
+
+Cancel navigation support for user recovery
+
+Authorization protection for delete operations
+
+Ownership validation before deletion
+
+pytest validation for delete workflow behavior
+
+CI pipeline validation for delete functionality
+
+Improved user safety and workflow reliability
+
+~99% test coverage maintained
+
+## v1.3.0 — REST API Integration
+
+Introduced a secure REST API using Django REST Framework to support programmatic access, automation workflows, and future system integrations.
+
+Features:
+
+Django REST Framework (DRF) integration
+
+REST API endpoints for Topics and Entries
+
+Full CRUD operations via API
+
+Authentication required for all API endpoints
+
+User ownership filtering and data isolation
+
+Server-side ownership assignment on create
+
+Permission validation for update and delete operations
+
+JSON-based request and response handling
+
+pytest API test suite for endpoint validation
+
+CI pipeline validation for API functionality
+
+Established foundation for automation and external integrations
+
+~99% test coverage maintained
+
+## v1.4.0 — Search, Filtering, and Ordering Support
+
+Enhanced the REST API with flexible query capabilities to improve data retrieval, usability, and scalability. This release introduces production-style query patterns commonly used in modern APIs and strengthens the system’s operational maturity.
+
+Features:
+
+Search filtering for Topics and Entries using query parameters
+
+Field-based filtering to retrieve records by related data
+
+Ordering support to control result sorting using API query parameters
+
+Pagination compatibility with search and filtering operations
+
+Token authentication for secure API access
+
+Session authentication support for browser-based usage
+
+User ownership authorization enforcement for all API queries
+
+Consistent response behavior across filtered and ordered datasets
+
+pytest validation for search, filtering, and ordering functionality
+
+Negative test coverage for authentication and authorization enforcement
+
+CI pipeline validation for query behavior and security rules
+
+Stable versioned release with rollback capability via Git tags
+
+Clean repository state with merged feature branches
+
+Maintained disciplined development workflow
+
+~99% test coverage maintained
+
+Supported Query Patterns:
+
+GET /api/topics/?search=python
+
+GET /api/entries/?topic=3
+
+GET /api/topics/?ordering=date_added
+
+GET /api/topics/?ordering=-date_added
+
+GET /api/topics/?search=django&ordering=date_added
+
+Security:
+
+IsAuthenticated enforcement for all API endpoints
+
+Ownership-based data filtering to ensure users access only their own records
+
+Token authentication validation for API clients
+
+Authorization checks for update and delete operations
+
+Protection against unauthorized data exposure
+
+Testing:
+
+Search functionality tests
+
+Filtering behavior tests
+
+Ordering validation tests
+
+Authentication enforcement tests
+
+Authorization protection tests
+
+Negative behavior tests for invalid query scenarios
+
+All tests passing in local and CI environments
+
+Operational Impact:
+
+Expanded API usability for real-world data retrieval scenarios
+
+Improved developer and automation workflow support
+
+Strengthened production readiness and reliability
+
+Maintained disciplined release and version control practices
+
+Established foundation for future automation and performance enhancements
 
 ## Author
 
