@@ -470,6 +470,16 @@ Maintained disciplined release and version control practices
 
 Established foundation for future automation and performance enhancements
 
+## v1.6.0
+
+Dockerized startup and automatic initialization
+
+Added Dockerfile and docker-compose
+Automatic database migration on startup
+Fixture-based user creation
+entrypoint.sh startup script
+Local and Docker environment parity
+
 ## Author
 
 Ron Gonzalez
