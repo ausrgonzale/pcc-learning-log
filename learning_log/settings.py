@@ -85,6 +85,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+INITIAL_DATA_FIXTURE = "fixtures/initial_data.json"
 
 ROOT_URLCONF = "learning_log.urls"
 

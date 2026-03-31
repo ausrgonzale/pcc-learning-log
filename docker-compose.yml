@@ -1,0 +1,25 @@
+name: learning_log
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: pcc_learning_log_web
+
+    command: >
+      sh -c "  python manage.py migrate --noinput && python manage.py loaddata fixtures/initial_data.json || true &&  python manage.py runserver 0.0.0.0:8000 "
+
+    environment:
+      DEBUG: "True"
+
+    ports:
+      - "8000:8000"
+
+    volumes:
+      - .:/app
+
+networks:
+  default:
+    name: learning_log_default

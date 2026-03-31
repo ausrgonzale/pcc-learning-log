@@ -1,0 +1,5 @@
+
+test_environment:
+  reset_database_before_tests: true
+  fixture_file: fixtures/initial_data.json
+  wait_for_service_seconds: 5
