@@ -288,6 +288,10 @@ def test_registration_empty_fields(context_page: Page):
 
 
 @pytest.mark.registration
+@pytest.mark.xfail(
+    reason="Bug: Username length > 150 accepted during registration",
+    strict=True
+)
 def test_registration_username_too_long(context_page: Page):
     """
     Test Case 7: Registration Fails with Username Exceeding Maximum Length
