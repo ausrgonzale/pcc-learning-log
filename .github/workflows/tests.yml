@@ -35,9 +35,40 @@ jobs:
     - name: Install Playwright browsers
       run: playwright install --with-deps
 
-    # Safety: ensure script is executable (harmless if already set)
-    - name: Ensure test script is executable
-      run: chmod +x scripts/run_tests.sh
+    # -----------------------------
+    # Database setup
+    # -----------------------------
+
+    - name: Run database migrations
+      run: python manage.py migrate
+
+    # -----------------------------
+    # Start Django server
+    # -----------------------------
+
+    - name: Start Django server
+      run: |
+        python manage.py runserver 0.0.0.0:8000 &
+        echo "Server started"
+
+    # -----------------------------
+    # Wait until server is ready
+    # -----------------------------
+
+    - name: Wait for server readiness
+      run: |
+        echo "Waiting for Django server..."
+        for i in {1..15}; do
+          if curl -s http://localhost:8000 > /dev/null; then
+            echo "Server is ready."
+            break
+          fi
+          sleep 2
+        done
+
+    # -----------------------------
+    # Run your existing script
+    # -----------------------------
 
     - name: Run test suite
       run: ./scripts/run_tests.sh
