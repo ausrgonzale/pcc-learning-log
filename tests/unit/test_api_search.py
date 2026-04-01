@@ -1,6 +1,6 @@
 import pytest
 from django.urls import reverse
-from tests.factories import TopicFactory, EntryFactory
+from tests.unit.factories import TopicFactory, EntryFactory
 
 @pytest.mark.django_db
 def test_user_can_search_topics(authenticated_client, user):

@@ -3,7 +3,7 @@ import json
 from django.urls import reverse
 
 from learning_logs.models import Topic
-from tests.factories import UserFactory, TopicFactory
+from tests.unit.factories import UserFactory, TopicFactory
 
 
 @pytest.mark.django_db

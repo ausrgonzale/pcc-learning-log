@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 CONFIG_FILE="config/test_config.yaml"
 

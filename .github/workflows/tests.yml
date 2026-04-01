@@ -9,7 +9,13 @@ on:
 jobs:
 
   test:
+
     runs-on: ubuntu-latest
+
+    env:
+      BASE_URL: http://localhost:8000
+      DJANGO_SETTINGS_MODULE: learning_log.settings
+      PYTHONUNBUFFERED: 1
 
     steps:
 
@@ -26,9 +32,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Run tests with coverage
-      run: |
-        pytest --cov --cov-report=term
-        
-    - name: Run tests
-      run: pytest --cov --cov-fail-under=90
+    - name: Install Playwright browsers
+      run: playwright install --with-deps
+
+    # Safety: ensure script is executable (harmless if already set)
+    - name: Ensure test script is executable
+      run: chmod +x scripts/run_tests.sh
+
+    - name: Run test suite
+      run: ./scripts/run_tests.sh

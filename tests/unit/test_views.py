@@ -1,8 +1,8 @@
 import pytest
-from tests.factories import EntryFactory, UserFactory, TopicFactory
+from tests.unit.factories import EntryFactory, UserFactory, TopicFactory
 from django.urls import reverse
 from learning_logs.models import Topic
-from tests.factories import TopicFactory, EntryFactory
+from tests.unit.factories import TopicFactory, EntryFactory
 from django.contrib.auth.models import User
 
 from learning_logs.models import Topic, Entry

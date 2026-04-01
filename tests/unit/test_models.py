@@ -1,5 +1,5 @@
 import pytest
-from tests.factories import UserFactory, TopicFactory
+from tests.unit.factories import UserFactory, TopicFactory
 from learning_logs.models import Topic, Entry
 
 @pytest.mark.django_db

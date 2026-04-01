@@ -1,5 +1,5 @@
 import pytest
-from tests.factories import UserFactory
+from tests.unit.factories import UserFactory
 from django.urls import reverse
 from django.contrib.auth.models import User
 
